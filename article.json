@@ -1,0 +1,15 @@
+{
+  "article": "how to work with json in rust",
+  "author": "kani",
+  "paragraph": [
+    {
+      "name": "string sentence"
+    },
+    {
+      "name": "body of the paragraph"
+    },
+    {
+      "name": "end of the paragraph"
+    }
+  ]
+}
