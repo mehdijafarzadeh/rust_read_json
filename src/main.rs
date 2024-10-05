@@ -28,13 +28,20 @@ struct Article {
 
 fn main() {
     // Call the function to read the JSON file and parse it into an `Article` struct.
-    let parsed: Article = read_json_from_file("article.json");
-
-    // Print the name of the first paragraph
-    println!(
-        "The name of the first paragraph is: {}",
-        parsed.paragraph[0].name
-    );
+    // Attempt to read the JSON file and parse it into an `Article` struct
+    match read_json_from_file("article.json") {
+        Ok(parsed) => {
+            // If successful, print the name of the first paragraph
+            println!(
+                "The name of the first paragraph is: {}",
+                parsed.paragraph[0].name
+            );
+        }
+        Err(e) => {
+            // If an error occurs, print the error message
+            eprintln!("Failed to read and parse JSON: {}", e);
+        }
+    }
 }
 
 /// Reads a JSON file from the specified file path and parses it into an `Article` struct.
@@ -60,20 +67,19 @@ fn main() {
 /// let article = read_json_from_file("article.json");
 /// println!("Article title: {}", article.article);
 /// ```
-fn read_json_from_file(file_path: &str) -> Article {
+fn read_json_from_file(file_path: &str) -> Result<Article, Box<dyn std::error::Error>> {
     // Open the file located at `file_path`.
-    let mut file = File::open(file_path).expect("File not found");
+    let mut file = File::open(file_path)?;
 
     // Create a string to store the contents of the file.
     let mut content = String::new();
 
     // Read the file's contents into the string.
-    file.read_to_string(&mut content)
-        .expect("Error reading the file");
+    file.read_to_string(&mut content)?;
 
     // Parse the JSON string into the `Article` struct using Serde.
     let parsed: Article = serde_json::from_str(&content).unwrap();
 
     // Return the parsed `Article`.
-    parsed
+    Ok(parsed)
 }
