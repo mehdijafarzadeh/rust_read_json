@@ -78,7 +78,7 @@ fn read_json_from_file(file_path: &str) -> Result<Article, Box<dyn std::error::E
     file.read_to_string(&mut content)?;
 
     // Parse the JSON string into the `Article` struct using Serde.
-    let parsed: Article = serde_json::from_str(&content).unwrap();
+    let parsed: Article = serde_json::from_str(&content)?;
 
     // Return the parsed `Article`.
     Ok(parsed)
